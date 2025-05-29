@@ -9,8 +9,10 @@ use Inertia\Inertia;
 
 class LandController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $user = $request->user();
+
         return Inertia::render('RegisterLand/Page', [
             'lands' => Land::with('crop')->get(),
             'crops' => Crop::all()
@@ -19,6 +21,9 @@ class LandController extends Controller
 
     public function store(Request $request)
 {
+
+    $user = $request->user();
+
     $request->validate([
         'name' => 'required',
         'hectares' => 'required|numeric',
@@ -45,6 +50,7 @@ class LandController extends Controller
         'latitude' => $request->latitude,
         'longitude' => $request->longitude,
         'id_crops' => $crop->id,
+        'id_users' => $user->id,
     ]);
 }
 

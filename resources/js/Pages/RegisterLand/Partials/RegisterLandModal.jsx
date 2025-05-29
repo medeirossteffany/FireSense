@@ -51,21 +51,28 @@ export default function RegisterLandModal({ crops, onClose }) {
             </Grid>
           ))}
 
-            <Grid item xs={12}>
-            <Autocomplete
-                freeSolo
-                options={crops.map((c) => c.type)}
-                onInputChange={(e, value) => setData('type', value)}
-                renderInput={(params) => (
-                <TextField
-                    {...params}
-                    label="Tipo de Plantação"
-                    error={!!errors.type}
-                    helperText={errors.type}
-                />
-                )}
-            />
-            </Grid>
+        <Grid item xs={12}>
+          <Autocomplete
+            freeSolo
+            options={crops.map((c) => c.type)}
+            onInputChange={(e, value) => setData('type', value)}
+            filterOptions={(options, state) => {
+              if (!state.inputValue) return [];
+              return options.filter((option) =>
+                option.toLowerCase().includes(state.inputValue.toLowerCase())
+              );
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Tipo de Plantação"
+                sx={{ minWidth: 225 }}
+                error={!!errors.type}
+                helperText={errors.type}
+              />
+            )}
+          />
+        </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>

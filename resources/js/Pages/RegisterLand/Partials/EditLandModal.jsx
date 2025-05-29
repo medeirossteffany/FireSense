@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, TextField, Grid, Button, MenuItem } from '@mui/material';
+import Autocomplete from '@mui/material/Autocomplete';
 
 export default function EditLandModal({ land, crops, onClose }) {
   const { data, setData, put, processing, errors } = useForm({
@@ -43,13 +44,26 @@ export default function EditLandModal({ land, crops, onClose }) {
           ))}
 
           <Grid item xs={12}>
-            <TextField
-              label="Tipo de Plantação"
-              fullWidth
-              value={data.type}
-              onChange={(e) => setData('type', e.target.value)}
-              error={!!errors.type}
-              helperText={errors.type}
+            <Autocomplete
+              freeSolo
+              value={data.type || ''}
+              options={crops.map((c) => c.type)}
+              onInputChange={(e, value) => setData('type', value)}
+              filterOptions={(options, state) => {
+                if (!state.inputValue) return [];
+                return options.filter((option) =>
+                  option.toLowerCase().includes(state.inputValue.toLowerCase())
+                );
+              }}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  label="Tipo de Plantação"
+                  sx={{ minWidth: 225 }}
+                  error={!!errors.type}
+                  helperText={errors.type}
+                />
+              )}
             />
           </Grid>
         </Grid>

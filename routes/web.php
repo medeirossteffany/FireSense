@@ -24,7 +24,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/lands', [LandController::class, 'index']);
+    Route::get('/lands', [LandController::class, 'index'])->name('lands');
     Route::post('/lands', [LandController::class, 'store']);
     Route::put('/lands/{land}', [LandController::class, 'update']);
 });
