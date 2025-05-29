@@ -5,6 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandController;
 use Inertia\Inertia;
+use App\Models\Land;
+use Illuminate\Http\Request;
+
 
 Route::get('/', function () {
     return Inertia::render('Welcome', [
@@ -27,6 +30,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/lands', [LandController::class, 'index'])->name('lands');
     Route::post('/lands', [LandController::class, 'store']);
     Route::put('/lands/{land}', [LandController::class, 'update']);
+
+    Route::get('/dashboard', function (Request $request) {
+        $user = $request->user();
+
+        $lands = Land::where('id_users', $user->id)
+            ->whereNotNull('latitude')
+            ->whereNotNull('longitude')
+            ->get(['id', 'name', 'city', 'state', 'latitude', 'longitude']);
+
+        return Inertia::render('Dashboard', [
+            'lands' => $lands,
+        ]);
+    })->middleware(['auth', 'verified'])->name('dashboard');
 });
 
 require __DIR__.'/auth.php';
