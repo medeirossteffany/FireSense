@@ -21,5 +21,11 @@
         "react-dom": "^18.2.0",
         "tailwindcss": "^3.2.1",
         "vite": "^6.2.4"
+    },
+    "dependencies": {
+        "@mui/lab": "^7.0.0-beta.12",
+        "@mui/material": "^7.1.0",
+        "bootstrap": "^5.3.6",
+        "react-bootstrap": "^2.10.10"
     }
 }
