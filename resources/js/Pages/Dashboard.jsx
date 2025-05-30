@@ -16,6 +16,7 @@ import GrainIcon from '@mui/icons-material/Grain';
 import AirIcon from '@mui/icons-material/Air';
 import OpacityIcon from '@mui/icons-material/Opacity';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
+import { LineChart } from '@mui/x-charts/LineChart';
 
 export default function Dashboard() {
   const { lands } = usePage().props;
@@ -57,6 +58,19 @@ export default function Dashboard() {
     return { label: 'Muito Baixo', color: 'primary' };
   };
 
+
+    const chartData = lands.map((land) => {
+        const key = `${land.latitude},${land.longitude}`;
+        const weather = weatherData[key];
+        if (!weather) return null;
+        const risco = calcularRiscoIncendio(weather.main.temp, weather.main.humidity);
+        return {
+        name: land.name,
+        risco,
+        };
+    }).filter(Boolean);
+
+
   return (
     <AuthenticatedLayout
       header={<h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Dashboard</h2>}
@@ -64,6 +78,26 @@ export default function Dashboard() {
       <Head title="Dashboard" />
 
       <Box sx={{ flexGrow: 1, p: 3 }}>
+      {chartData.length > 0 && (
+        <Box sx={{ mb: 4 }}>
+        <Typography variant="h6" sx={{ mb: 2 }}>Risco de Incêndio Geral</Typography>
+        <LineChart
+            height={300}
+            series={[
+            {
+                data: chartData.map(item => item.risco),
+                label: 'Risco de Incêndio (%)',
+            },
+            ]}
+            xAxis={[
+            {
+                scaleType: 'band',
+                data: chartData.map(item => item.name),
+            },
+            ]}
+        />
+        </Box>
+        )}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {lands.map((land) => {
             const key = `${land.latitude},${land.longitude}`;
