@@ -36,6 +36,12 @@ export default function AuthenticatedLayout({ header, children }) {
                                 >
                                     Terrenos
                                 </NavLink>
+                                <NavLink
+                                    href={route('irrigationHistories')}
+                                    active={route().current('irrigationHistories')}
+                                >
+                                    Histórico de Irrigações
+                                </NavLink>
 
                             </div>
                         </div>

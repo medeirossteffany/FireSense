@@ -57,7 +57,7 @@ export default function LandTable({ lands, onEdit }) {
       ),
       ignoreRowClick: true,
       allowOverflow: true,
-      button: true,
+      button: "true",
     },
   ];
 

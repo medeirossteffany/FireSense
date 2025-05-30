@@ -5,10 +5,9 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LandController;
 use Inertia\Inertia;
-use App\Models\Land;
-use Illuminate\Http\Request;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\WeatherController;
+use App\Http\Controllers\IrrigationHistoryController;
 
 
 Route::get('/', function () {
@@ -32,6 +31,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::get('/weather', [WeatherController::class, 'get']);
+
+    Route::get('/irrigation-histories', [IrrigationHistoryController::class, 'index'])->name('irrigationHistories');
+
+
 });
 
 require __DIR__.'/auth.php';
