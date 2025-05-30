@@ -29,6 +29,20 @@ export default function Dashboard() {
         });
     }, [lands]);
 
+    const calcularRiscoIncendio = (temp, humidity) => {
+        const risco = temp - (0.55 * (1 - humidity / 100) * (temp - 14.5));
+        let riscoPercentual = Math.min(Math.max((risco / 50) * 100, 0), 100);
+        return riscoPercentual.toFixed(1);
+    };
+
+    const classificarRisco = (risco) => {
+        if (risco >= 80) return 'Muito Alto';
+        if (risco >= 60) return 'Alto';
+        if (risco >= 40) return 'Moderado';
+        if (risco >= 20) return 'Baixo';
+        return 'Muito Baixo';
+    };
+
     return (
         <AuthenticatedLayout
             header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Dashboard</h2>}
@@ -53,6 +67,9 @@ export default function Dashboard() {
                                             <p><strong>Pressão:</strong> {weather.main.pressure} hPa</p>
                                             <p><strong>Vento:</strong> {weather.wind.speed} m/s</p>
                                             <p><strong>Condição:</strong> {weather.weather[0].description}</p>
+                                            <p><strong>Risco de Incêndio:</strong>
+                                                {` ${calcularRiscoIncendio(weather.main.temp, weather.main.humidity)}% (${classificarRisco(calcularRiscoIncendio(weather.main.temp, weather.main.humidity))})`}
+                                            </p>
                                             <img
                                                 src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
                                                 alt={weather.weather[0].description}
