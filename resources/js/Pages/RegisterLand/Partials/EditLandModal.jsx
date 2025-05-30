@@ -28,8 +28,6 @@ export default function EditLandModal({ land, crops, onClose }) {
             ['city', 'Cidade'],
             ['street', 'Rua'],
             ['number', 'Número'],
-            ['latitude', 'Latitude'],
-            ['longitude', 'Longitude'],
           ].map(([field, label]) => (
             <Grid item xs={12} sm={6} key={field}>
               <TextField

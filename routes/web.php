@@ -7,6 +7,8 @@ use App\Http\Controllers\LandController;
 use Inertia\Inertia;
 use App\Models\Land;
 use Illuminate\Http\Request;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\WeatherController;
 
 
 Route::get('/', function () {
@@ -18,10 +20,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
@@ -31,18 +29,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/lands', [LandController::class, 'store']);
     Route::put('/lands/{land}', [LandController::class, 'update']);
 
-    Route::get('/dashboard', function (Request $request) {
-        $user = $request->user();
+    Route::get('/dashboard', [DashboardController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
-        $lands = Land::where('id_users', $user->id)
-            ->whereNotNull('latitude')
-            ->whereNotNull('longitude')
-            ->get(['id', 'name', 'city', 'state', 'latitude', 'longitude']);
-
-        return Inertia::render('Dashboard', [
-            'lands' => $lands,
-        ]);
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/weather', [WeatherController::class, 'get']);
 });
 
 require __DIR__.'/auth.php';

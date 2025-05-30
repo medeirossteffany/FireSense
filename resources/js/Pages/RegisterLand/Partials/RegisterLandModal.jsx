@@ -4,17 +4,15 @@ import Autocomplete from '@mui/material/Autocomplete';
 
 export default function RegisterLandModal({ crops, onClose }) {
     const { data, setData, post, processing, errors } = useForm({
-        name: '',
-        hectares: '',
-        state: '',
-        neighborhood: '',
-        city: '',
-        street: '',
-        number: '',
-        latitude: '',
-        longitude: '',
-        type: '',
-      });
+      name: '',
+      hectares: '',
+      state: '',
+      neighborhood: '',
+      city: '',
+      street: '',
+      number: '',
+      type: '',
+  });
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -36,8 +34,6 @@ export default function RegisterLandModal({ crops, onClose }) {
             ['city', 'Cidade'],
             ['street', 'Rua'],
             ['number', 'Número'],
-            ['latitude', 'Latitude'],
-            ['longitude', 'Longitude'],
           ].map(([field, label]) => (
             <Grid item xs={12} sm={6} key={field}>
               <TextField

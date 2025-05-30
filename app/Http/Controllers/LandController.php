@@ -14,76 +14,105 @@ class LandController extends Controller
         $user = $request->user();
 
         return Inertia::render('RegisterLand/Page', [
-            'lands' => Land::with('crop')->get(),
+            'lands' => Land::with('crop')->where('id_users', $user->id)->get(),
             'crops' => Crop::all()
         ]);
     }
 
     public function store(Request $request)
-{
+    {
+        $user = $request->user();
 
-    $user = $request->user();
+        $validated = $request->validate([
+            'name' => 'required',
+            'hectares' => 'required|numeric',
+            'state' => 'required',
+            'neighborhood' => 'required',
+            'city' => 'required',
+            'street' => 'required',
+            'number' => 'required',
+            'type' => 'required|string|max:255',
+        ]);
 
-    $request->validate([
-        'name' => 'required',
-        'hectares' => 'required|numeric',
-        'state' => 'required',
-        'neighborhood' => 'required',
-        'city' => 'required',
-        'street' => 'required',
-        'number' => 'required',
-        'latitude' => 'nullable|numeric',
-        'longitude' => 'nullable|numeric',
-        'type' => 'required|string|max:255',
-    ]);
+        $crop = Crop::firstOrCreate(['type' => $validated['type']]);
+        $address = "{$validated['street']}, {$validated['number']}, {$validated['city']}, {$validated['state']}";
+        $coordinates = $this->getCoordinates($address);
 
-    $crop = Crop::firstOrCreate(['type' => $request->type]);
+        Land::create([
+            'name' => $validated['name'],
+            'hectares' => $validated['hectares'],
+            'state' => $validated['state'],
+            'neighborhood' => $validated['neighborhood'],
+            'city' => $validated['city'],
+            'street' => $validated['street'],
+            'number' => $validated['number'],
+            'latitude' => $coordinates['lat'],
+            'longitude' => $coordinates['lon'],
+            'id_crops' => $crop->id,
+            'id_users' => $user->id,
+        ]);
+    }
 
-    Land::create([
-        'name' => $request->name,
-        'hectares' => $request->hectares,
-        'state' => $request->state,
-        'neighborhood' => $request->neighborhood,
-        'city' => $request->city,
-        'street' => $request->street,
-        'number' => $request->number,
-        'latitude' => $request->latitude,
-        'longitude' => $request->longitude,
-        'id_crops' => $crop->id,
-        'id_users' => $user->id,
-    ]);
-}
+    public function update(Request $request, Land $land)
+    {
+        $validated = $request->validate([
+            'name' => 'required',
+            'hectares' => 'required|numeric',
+            'state' => 'required',
+            'neighborhood' => 'required',
+            'city' => 'required',
+            'street' => 'required',
+            'number' => 'required',
+            'type' => 'required|string|max:255',
+        ]);
 
+        $crop = Crop::firstOrCreate(['type' => $validated['type']]);
+        $address = "{$validated['street']}, {$validated['number']}, {$validated['city']}, {$validated['state']}";
+        $coordinates = $this->getCoordinates($address);
 
-public function update(Request $request, Land $land)
-{
-    $request->validate([
-        'name' => 'required',
-        'hectares' => 'required|numeric',
-        'state' => 'required',
-        'neighborhood' => 'required',
-        'city' => 'required',
-        'street' => 'required',
-        'number' => 'required',
-        'latitude' => 'nullable|numeric',
-        'longitude' => 'nullable|numeric',
-        'type' => 'required|string|max:255',
-    ]);
+        $land->update([
+            'name' => $validated['name'],
+            'hectares' => $validated['hectares'],
+            'state' => $validated['state'],
+            'neighborhood' => $validated['neighborhood'],
+            'city' => $validated['city'],
+            'street' => $validated['street'],
+            'number' => $validated['number'],
+            'latitude' => $coordinates['lat'],
+            'longitude' => $coordinates['lon'],
+            'id_crops' => $crop->id,
+        ]);
+    }
 
-    $crop = Crop::firstOrCreate(['type' => $request->type]);
+    private function getCoordinates($address)
+    {
+        $url = 'https://nominatim.openstreetmap.org/search?' . http_build_query([
+            'q' => $address,
+            'format' => 'json',
+            'limit' => 1,
+        ]);
 
-    $land->update([
-        'name' => $request->name,
-        'hectares' => $request->hectares,
-        'state' => $request->state,
-        'neighborhood' => $request->neighborhood,
-        'city' => $request->city,
-        'street' => $request->street,
-        'number' => $request->number,
-        'latitude' => $request->latitude,
-        'longitude' => $request->longitude,
-        'id_crops' => $crop->id,
-    ]);
-}
+        $options = [
+            "http" => [
+                "header" => "User-Agent: LandApp/1.0\r\n"
+            ]
+        ];
 
+        $context = stream_context_create($options);
+        $response = file_get_contents($url, false, $context);
+
+        $data = json_decode($response, true);
+
+        if (!empty($data)) {
+            return [
+                'lat' => $data[0]['lat'],
+                'lon' => $data[0]['lon'],
+            ];
+        }
+
+        return [
+            'lat' => null,
+            'lon' => null,
+        ];
+    }
 }

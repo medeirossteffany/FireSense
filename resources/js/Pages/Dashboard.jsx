@@ -11,13 +11,10 @@ export default function Dashboard() {
         lands.forEach((land) => {
             const key = `${land.latitude},${land.longitude}`;
 
-            axios.get('https://api.openweathermap.org/data/2.5/weather', {
+            axios.get('/weather', {
                 params: {
                     lat: land.latitude,
                     lon: land.longitude,
-                    appid: '4d3b254b321f69cb81f6e3bafc222dc4',
-                    units: 'metric',
-                    lang: 'pt_br',
                 }
             })
             .then(response => {
@@ -34,11 +31,7 @@ export default function Dashboard() {
 
     return (
         <AuthenticatedLayout
-            header={
-                <h2 className="text-xl font-semibold leading-tight text-gray-800">
-                    Dashboard
-                </h2>
-            }
+            header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Dashboard</h2>}
         >
             <Head title="Dashboard" />
 
@@ -55,7 +48,10 @@ export default function Dashboard() {
                                     <h4 className="text-md font-semibold">{land.name} - {land.city}/{land.state}</h4>
                                     {weather ? (
                                         <div className="space-y-1">
-                                            <p><strong>Temperatura:</strong> {weather.main.temp}°C</p>
+                                            <p><strong>Temperatura:</strong> {weather.main.temp}°C (sensação: {weather.main.feels_like}°C)</p>
+                                            <p><strong>Umidade:</strong> {weather.main.humidity}%</p>
+                                            <p><strong>Pressão:</strong> {weather.main.pressure} hPa</p>
+                                            <p><strong>Vento:</strong> {weather.wind.speed} m/s</p>
                                             <p><strong>Condição:</strong> {weather.weather[0].description}</p>
                                             <img
                                                 src={`https://openweathermap.org/img/wn/${weather.weather[0].icon}@2x.png`}
