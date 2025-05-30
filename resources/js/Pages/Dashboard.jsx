@@ -91,7 +91,7 @@ export default function Dashboard() {
                 {
                     data: chartData.map(item => item.risco),
                     label: 'Risco de Incêndio (%)',
-                    color: '#1976d2',
+                    color: '#ff4444',
                 },
                 ]}
                 xAxis={[
