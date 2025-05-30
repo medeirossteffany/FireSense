@@ -16,7 +16,7 @@ import GrainIcon from '@mui/icons-material/Grain';
 import AirIcon from '@mui/icons-material/Air';
 import OpacityIcon from '@mui/icons-material/Opacity';
 import ThermostatIcon from '@mui/icons-material/Thermostat';
-import { LineChart } from '@mui/x-charts/LineChart';
+import { BarChart } from '@mui/x-charts/BarChart';
 
 export default function Dashboard() {
   const { lands } = usePage().props;
@@ -80,24 +80,38 @@ export default function Dashboard() {
       <Box sx={{ flexGrow: 1, p: 3 }}>
       {chartData.length > 0 && (
         <Box sx={{ mb: 4 }}>
-        <Typography variant="h6" sx={{ mb: 2 }}>Risco de Incêndio Geral</Typography>
-        <LineChart
-            height={300}
-            series={[
-            {
-                data: chartData.map(item => item.risco),
-                label: 'Risco de Incêndio (%)',
-            },
-            ]}
-            xAxis={[
-            {
-                scaleType: 'band',
-                data: chartData.map(item => item.name),
-            },
-            ]}
-        />
+            <Box sx={{ backgroundColor: 'white', p: 2, borderRadius: 2, boxShadow: 1 }}>
+            <Typography variant="h6" sx={{ mb: 2 }}>
+            Risco de Incêndio Geral
+            </Typography>
+            <BarChart
+                height={300}
+                width={1100}
+                series={[
+                {
+                    data: chartData.map(item => item.risco),
+                    label: 'Risco de Incêndio (%)',
+                    color: '#1976d2',
+                },
+                ]}
+                xAxis={[
+                {
+                    scaleType: 'band',
+                    data: chartData.map(item => item.name),
+                },
+                ]}
+                yAxis={[
+                {
+                    min: 0,
+                    max: 100,
+                },
+                ]}
+                grid={{ horizontal: true }}
+            />
+            </Box>
         </Box>
         )}
+
         <Grid container spacing={3} sx={{ mb: 4 }}>
           {lands.map((land) => {
             const key = `${land.latitude},${land.longitude}`;
