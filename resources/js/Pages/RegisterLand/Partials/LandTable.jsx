@@ -22,6 +22,11 @@ export default function LandTable({ lands, onEdit }) {
 
   const columns = [
     {
+      name: 'Id',
+      selector: row => row.id,
+      sortable: true,
+    },
+    {
       name: 'Nome',
       selector: row => row.name,
       sortable: true,

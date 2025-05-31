@@ -70,6 +70,29 @@ export default function Dashboard() {
         };
     }).filter(Boolean);
 
+    const enviarAlerta = (landId) => {
+      axios.get(`/alert/${landId}`)
+        .then(response => {
+          console.log('Irrigação acionada para Land ID:', landId, response.data);
+        })
+        .catch(error => {
+          console.error('Erro ao acionar irrigação:', error);
+        });
+    };
+
+    useEffect(() => {
+      lands.forEach((land) => {
+        const key = `${land.latitude},${land.longitude}`;
+        const weather = weatherData[key];
+
+        if (weather) {
+          const risco = calcularRiscoIncendio(weather.main.temp, weather.main.humidity);
+          if (risco >= 42) {
+            enviarAlerta(land.id);
+          }
+        }
+      });
+    }, [weatherData]);
 
   return (
     <AuthenticatedLayout

@@ -9,7 +9,7 @@ class IrrigationHistoryController extends Controller
 {
     public function index()
     {
-        $histories = IrrigationHistory::with('land')->get();
+        $histories = IrrigationHistory::with('land.crop')->get();
 
         return Inertia::render('Irrigation/Page', [
             'histories' => $histories,
