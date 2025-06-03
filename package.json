@@ -29,7 +29,9 @@
         "@mui/lab": "^7.0.0-beta.12",
         "@mui/material": "^7.1.0",
         "@mui/x-charts": "^8.5.0",
+        "aos": "^2.3.4",
         "bootstrap": "^5.3.6",
+        "framer-motion": "^12.15.0",
         "react-bootstrap": "^2.10.10",
         "react-data-table-component": "^7.7.0",
         "recharts": "^2.15.3"

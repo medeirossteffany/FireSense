@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,500;1,600;1,700;1,800;1,900&family=Quicksand:wght@300..700&display=swap');
+
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
+body{
+  font-family: 'Poppins', sans-serif;
+  scroll-behavior: smooth;
+}
+  
+.hero{
+  background-image: url('/images/hero.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+} 
+
+.motivos{
+  background-image: url('/images/tela.gif');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
