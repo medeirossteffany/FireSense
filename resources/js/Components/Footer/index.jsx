@@ -6,7 +6,7 @@ export const Footer = () => {
                 <Link href="/" className="flex justify-center mb-4 w-1/2 mx-auto">
                     <img src="/favicon.png"  className="w-[30%] md:w-[8%]"  alt="" />
                 </Link>
-            &copy; 2024 FireSense. Todos os direitos reservados.
+            &copy; 2025 FireSense. Todos os direitos reservados.
         </footer>
     );
 };
