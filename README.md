@@ -7,19 +7,19 @@
 FireSense é uma plataforma de **monitoramento climático inteligente** focada em **agricultura**.  
 O sistema calcula o **risco de queimadas** baseado em dados climáticos em tempo real e, quando o risco atinge níveis críticos, aciona automaticamente o sistema de irrigação.
 
-🚀 **Funcionalidades principais**:
+**Funcionalidades principais**:
 - Cadastro de propriedades agrícolas (terrenos);
 - Consulta climática em tempo real via OpenWeather;
 - Cálculo automático do risco de queimadas;
 - Acionamento inteligente de irrigação via ESP32;
 - Painel administrativo para monitoramento dos dados.
 
-## 🚀 Como rodar o projeto localmente
+## Como rodar o projeto localmente
 
 ### 1. Clonar o repositório
 
 ```bash
-git clone <link-do-seu-repositorio>
+git clone (https://github.com/medeirossteffany/FireSense.git)
 cd FireSense
 ```
 
@@ -58,7 +58,7 @@ O FireSense utiliza a API da OpenWeather para obter informações climáticas.
 OPENWEATHER_API_KEY=sua_chave_aqui
 ```
 
-⚠️ **Importante**: Sem a API Key válida, o sistema não conseguirá buscar os dados meteorológicos.
+**Importante**: Sem a API Key válida, o sistema não conseguirá buscar os dados meteorológicos.
 
 ### 6. Rodar as migrations e seeders
 
@@ -78,7 +78,7 @@ php artisan serve
 npm run dev
 ```
 
-## 🛠️ Tecnologias utilizadas
+## Tecnologias utilizadas
 
 - Laravel (PHP 8+)
 - React (Inertia.js + Vite)
