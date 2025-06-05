@@ -59,16 +59,17 @@ export default function Dashboard() {
   };
 
 
-    const chartData = lands.map((land) => {
-        const key = `${land.latitude},${land.longitude}`;
-        const weather = weatherData[key];
-        if (!weather) return null;
-        const risco = calcularRiscoIncendio(weather.main.temp, weather.main.humidity);
-        return {
+  const chartData = lands.map((land) => {
+    const key = `${land.latitude},${land.longitude}`;
+    const weather = weatherData[key];
+    if (!weather || !weather.main) return null;  // <-- proteção completa agora
+    const risco = calcularRiscoIncendio(weather.main.temp, weather.main.humidity);
+    return {
         name: land.name,
         risco,
-        };
-    }).filter(Boolean);
+    };
+}).filter(Boolean);
+
 
     const enviarAlerta = (landId) => {
       axios.get(`/alert/${landId}`)
@@ -84,8 +85,8 @@ export default function Dashboard() {
       lands.forEach((land) => {
         const key = `${land.latitude},${land.longitude}`;
         const weather = weatherData[key];
-
-        if (weather) {
+    
+        if (weather && weather.main) {  // <--- proteção aqui também
           const risco = calcularRiscoIncendio(weather.main.temp, weather.main.humidity);
           if (risco >= 42) {
             enviarAlerta(land.id);
@@ -93,10 +94,11 @@ export default function Dashboard() {
         }
       });
     }, [weatherData]);
+    
 
   return (
     <AuthenticatedLayout
-      header={<h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Dashboard</h2>}
+      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Dashboard</h2>}
     >
       <Head title="Dashboard" />
 
@@ -140,7 +142,7 @@ export default function Dashboard() {
             const key = `${land.latitude},${land.longitude}`;
             const weather = weatherData[key];
 
-            if (!weather) {
+            if (!weather || !weather.main) {
               return (
                 <Grid item xs={12} md={6} lg={4} key={land.id}>
                   <Card variant="outlined">

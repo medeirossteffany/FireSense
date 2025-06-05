@@ -101,6 +101,8 @@ class LandController extends Controller
         $context = stream_context_create($options);
         $response = file_get_contents($url, false, $context);
 
+        var_dump($response); die;
+
         $data = json_decode($response, true);
 
         if (!empty($data)) {

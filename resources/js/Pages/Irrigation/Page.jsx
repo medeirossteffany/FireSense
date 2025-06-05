@@ -9,7 +9,7 @@ export default function Page() {
 
   return (
     <AuthenticatedLayout
-      header={<h2 className="text-xl font-semibold leading-tight text-gray-800 dark:text-gray-200">Histórico de Irrigações</h2>}
+      header={<h2 className="text-xl font-semibold leading-tight text-gray-800">Histórico de Irrigações</h2>}
     >
       <Head title="Histórico de Irrigações" />
 

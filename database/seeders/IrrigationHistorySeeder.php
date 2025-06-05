@@ -5,27 +5,21 @@ namespace Database\Seeders;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
+use App\Models\Land;
+use App\Models\IrrigationHistory;
 
 class IrrigationHistorySeeder extends Seeder
 {
     public function run()
     {
-        DB::table('irrigation_histories')->insert([
-            [
-                'date' => Carbon::now(),
-                'status' => true, // id = 1 (ativo)
-                'id_lands' => 1,
-            ],
-            [
-                'date' => Carbon::now(),
-                'status' => false, // id = 2
-                'id_lands' => 2,
-            ],
-            [
-                'date' => Carbon::now(),
-                'status' => false, // id = 3
-                'id_lands' => 3,
-            ],
-        ]);
+        $lands = Land::limit(4)->get(); 
+
+        foreach ($lands as $land) {
+            IrrigationHistory::create([
+                'id_lands' => $land->id, 
+                'date' => now(),         
+                'status' => false,       
+            ]);
+        }
     }
 }

@@ -183,6 +183,7 @@ export default function AuthenticatedLayout({ header, children }) {
                 </header>
             )}
 
+
             <main>{children}</main>
         </div>
     );

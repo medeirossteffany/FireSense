@@ -34,6 +34,7 @@
         "framer-motion": "^12.15.0",
         "react-bootstrap": "^2.10.10",
         "react-data-table-component": "^7.7.0",
-        "recharts": "^2.15.3"
+        "recharts": "^2.15.3",
+        "swiper": "^11.2.8"
     }
 }
